@@ -1,21 +1,31 @@
 import 'package:flutter/cupertino.dart';
+import 'SecondPage.dart';
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-        title: 'Flutter Demo',
-        home: CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-                middle: Text('Flutter Demo'),
-                trailing: CupertinoButton(
-                  child: Icon(CupertinoIcons.add),
-                  onPressed: () {},
-                  padding: EdgeInsets.zero,
-                )),
-            child: PageContent()));
+    return CupertinoApp(title: 'Flutter Demo', home: AppStructure());
+  }
+}
+
+class AppStructure extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+            middle: Text('Flutter Demo'),
+            trailing: CupertinoButton(
+              child: Icon(CupertinoIcons.right_chevron),
+              onPressed: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(builder: (context) => SecondPage(), title: 'second page'),
+                );
+              },
+              padding: EdgeInsets.zero,
+            )),
+        child: PageContent());
   }
 }
 
