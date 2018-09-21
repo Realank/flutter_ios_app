@@ -1,6 +1,8 @@
 # flutter_ios_app
 
-A new Flutter application.
+A demo to show new cupertino widgets in flutter release preview 2
+
+![](./demo.gif)
 
 ## Getting Started
 

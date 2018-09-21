@@ -36,11 +36,13 @@ class PageContent extends StatefulWidget {
 
 class _PageContentState extends State<PageContent> {
   Duration duration;
+  String selectedSegmentControl;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     duration = Duration();
+    selectedSegmentControl = 'first';
   }
 
   @override
@@ -106,6 +108,17 @@ class _PageContentState extends State<PageContent> {
               this.duration = duration;
               setState(() {});
             }),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: CupertinoSegmentedControl(
+                groupValue: selectedSegmentControl,
+                children: {'first': Text('first'), 'second': Text('second')},
+                onValueChanged: (value) {
+                  print('changed to $value');
+                  selectedSegmentControl = value;
+                  setState(() {});
+                }),
           ),
           CupertinoButton(
               child: Text('show Alert'),
