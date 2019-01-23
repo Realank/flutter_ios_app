@@ -1,7 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'SecondPage.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:async';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
+import 'ImagePage.dart';
 
 void main() => runApp(new MyApp());
+
+final globalKey = GlobalKey();
 
 class MyApp extends StatelessWidget {
   @override
@@ -93,6 +100,16 @@ class _PageContentState extends State<PageContent> {
         });
   }
 
+  captureImage() async {
+    RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    Navigator.of(context).push(
+      CupertinoPageRoute(builder: (context) => ImagePage(pngBytes), title: 'image page'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -125,6 +142,11 @@ class _PageContentState extends State<PageContent> {
               onPressed: () {
                 popUpActionSheet(context);
               }),
+          CupertinoButton(
+              child: Text('Capture'),
+              onPressed: () {
+                captureImage();
+              }),
           Container(
             color: CupertinoColors.destructiveRed,
             child: EditableText(
@@ -134,13 +156,16 @@ class _PageContentState extends State<PageContent> {
                 cursorColor: CupertinoColors.activeBlue),
           ),
           Expanded(
-            child: ListView.builder(itemBuilder: (context, index) {
-              if (index < 20) {
-                return Text('cell $index');
-              } else {
-                return null;
-              }
-            }),
+            child: RepaintBoundary(
+              key: globalKey,
+              child: ListView.builder(itemBuilder: (context, index) {
+                if (index < 40) {
+                  return Text('cell $index');
+                } else {
+                  return null;
+                }
+              }),
+            ),
           )
         ],
       ),
